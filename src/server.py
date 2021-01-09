@@ -1,15 +1,19 @@
 import tornado.web, tornado.ioloop, tornado.websocket  
 from picamera import PiCamera, PiVideoFrameType
 from string import Template
-import io, os, socket
+import io, os, socket, time
 
 # start configuration
 serverPort = 8000
 
-camera = PiCamera(sensor_mode=4, resolution='1640x1232', framerate=30)
+camera = PiCamera(sensor_mode=3, resolution='1014x760', framerate=0.5)
 camera.vflip = True
 camera.hflip = True
 camera.video_denoise = True
+camera.iso = 800
+camera.shutter_speed =2000000
+camera.annotate_frame_num = True
+camera.annotate_text_size = 12
 
 recordingOptions = {
     'format' : 'h264', 
@@ -25,8 +29,9 @@ recordingOptions = {
 # end configuration
 
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-s.connect(('8.8.8.8', 0))
+s.connect(('0.0.0.0', 0))
 serverIp = s.getsockname()[0]
+serverIp = 'myrpi3p35.local'
 
 abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
@@ -51,11 +56,15 @@ class StreamBuffer(object):
         self.loop = None
         self.buffer = io.BytesIO()
         self.camera = camera
+        self.time = time.time()
 
     def setLoop(self, loop):
         self.loop = loop
 
     def write(self, buf):
+        if (time.time() - self.time) >= 1:
+            self.time = time.time()
+            self.camera.annotate_text = time.strftime("%m/%d/%Y %H:%M:%S", time.localtime())
         if self.camera.frame.complete and self.camera.frame.frame_type != self.frameTypes.sps_header:
             self.buffer.write(buf)
             if self.loop is not None and wsHandler.hasConnections():
