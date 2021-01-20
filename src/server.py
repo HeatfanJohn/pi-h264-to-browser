@@ -1,5 +1,5 @@
 import tornado.web, tornado.ioloop, tornado.websocket  
-from picamera import PiCamera, PiVideoFrameType
+from picamera import PiCamera, PiVideoFrameType, Camera
 from string import Template
 import io, os, socket, time
 
@@ -14,6 +14,7 @@ camera.iso = 800
 camera.shutter_speed =2000000
 camera.annotate_frame_num = True
 camera.annotate_text_size = 12
+camera.annotate_backgroud = Camera('black')
 
 recordingOptions = {
     'format' : 'h264', 
@@ -110,10 +111,15 @@ class jsHandler(tornado.web.RequestHandler):
     def get(self):
         self.write(appJs)
 
+class captureHandler(tornado.web.RequestHandler):
+    def get(self):
+        self.write(appJs)
+
 requestHandlers = [
     (r"/ws/", wsHandler),
     (r"/", htmlHandler),
     (r"/jmuxer.min.js", jsHandler)
+    (r"/capture.jpg", captureHandler)
 ]
 
 try:
