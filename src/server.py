@@ -118,7 +118,7 @@ class captureHandler(tornado.web.RequestHandler):
 requestHandlers = [
     (r"/ws/", wsHandler),
     (r"/", htmlHandler),
-    (r"/jmuxer.min.js", jsHandler)
+    (r"/jmuxer.min.js", jsHandler),
     (r"/capture.jpg", captureHandler)
 ]
 
