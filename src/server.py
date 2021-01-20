@@ -14,7 +14,7 @@ camera.iso = 800
 camera.shutter_speed =2000000
 camera.annotate_frame_num = True
 camera.annotate_text_size = 12
-camera.annotate_backgroud = Color('black')
+camera.annotate_background = Color('black')
 
 recordingOptions = {
     'format' : 'h264', 
