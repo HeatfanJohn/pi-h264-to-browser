@@ -1,5 +1,5 @@
 import tornado.web, tornado.ioloop, tornado.websocket  
-from picamera import PiCamera, PiVideoFrameType, Camera
+from picamera import PiCamera, PiVideoFrameType, Color
 from string import Template
 import io, os, socket, time
 
@@ -14,7 +14,7 @@ camera.iso = 800
 camera.shutter_speed =2000000
 camera.annotate_frame_num = True
 camera.annotate_text_size = 12
-camera.annotate_backgroud = Camera('black')
+camera.annotate_backgroud = Color('black')
 
 recordingOptions = {
     'format' : 'h264', 
