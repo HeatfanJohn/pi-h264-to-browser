@@ -133,4 +133,4 @@ try:
 except KeyboardInterrupt:
     camera.stop_recording()
     camera.close()
-    loop.stop() # type: ignore # Tell PyLance to suppress false "possibly unbound" warning
+    loop.stop() # type: ignore # Tell PyLance to suppress "possibly unbound" warning
