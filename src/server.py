@@ -1,5 +1,5 @@
 import tornado.web, tornado.ioloop, tornado.websocket  
-from picamera import PiCamera, PiVideoFrameType, Color
+from picamera import PiCamera, PiVideoFrameType, Color # type: ignore # Tell PyLance to ignore import error
 from string import Template
 import io, os, socket, time
 
@@ -133,4 +133,4 @@ try:
 except KeyboardInterrupt:
     camera.stop_recording()
     camera.close()
-    loop.stop()
+    loop.stop() # type: ignore # Tell PyLance to suppress "possibly unbound" warning
