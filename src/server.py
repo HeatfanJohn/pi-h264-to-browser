@@ -2,6 +2,7 @@ import tornado.web, tornado.ioloop, tornado.websocket
 from picamera import PiCamera, PiVideoFrameType, Color # type: ignore # Tell PyLance to ignore import error
 from string import Template
 import io, os, socket, time
+from io import BytesIO
 
 # start configuration
 serverPort = 8000
@@ -113,7 +114,11 @@ class jsHandler(tornado.web.RequestHandler):
 
 class captureHandler(tornado.web.RequestHandler):
     def get(self):
-        self.write(appJs)
+        myio = BytesIO()
+        camera.capture(myio, use_video_port=True)
+        myio.seek(0)
+        self.write(getFile(myio))
+
 
 requestHandlers = [
     (r"/ws/", wsHandler),
