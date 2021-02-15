@@ -115,7 +115,7 @@ class jsHandler(tornado.web.RequestHandler):
 class captureHandler(tornado.web.RequestHandler):
     def get(self):
         myio = BytesIO()
-        camera.capture(myio, use_video_port=True)
+        camera.capture(myio, format='jpeg', use_video_port=True)
         myio.seek(0)
         self.write(getFile(myio))
 
