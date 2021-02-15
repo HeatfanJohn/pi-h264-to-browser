@@ -117,6 +117,7 @@ class captureHandler(tornado.web.RequestHandler):
         myio = BytesIO()
         camera.capture(myio, format='jpeg', use_video_port=True)
         myio.seek(0)
+        self.set_header('Content-Type', 'image/jpeg')
         self.write(myio.read())
 
 
